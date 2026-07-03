@@ -1,0 +1,384 @@
+/* ===========================================================
+   Random Joke Generator — "Open Mic Night" theme
+   Palette:
+     --ink:      #2B1B4D  (deep stage-curtain purple, text)
+     --cream:    #FFF6E0  (marquee card cream)
+     --coral:    #FF5D73  (primary / spotlight pink)
+     --teal:     #17B890  (secondary accent)
+     --gold:     #FFC93C  (highlight / stars)
+     --stage:    #1F1236  (dark curtain background)
+   Type:
+     Display -> "Baloo 2"      (chunky, marquee-poster energy)
+     Body    -> "Work Sans"    (clean, quiet workhorse)
+     Utility -> "Space Mono"   (ticket-stub / typewriter feel for jokes)
+   =========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+    --ink: #2B1B4D;
+    --cream: #FFF6E0;
+    --coral: #FF5D73;
+    --coral-dark: #E8455C;
+    --teal: #17B890;
+    --gold: #FFC93C;
+    --stage: #1F1236;
+    --stage-light: #33215c;
+
+    --radius-lg: 20px;
+    --radius-md: 12px;
+    --shadow-card: 0 12px 0 var(--ink), 0 12px 24px rgba(0,0,0,0.25);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Work Sans', sans-serif;
+    color: var(--ink);
+    background:
+        radial-gradient(circle at 20% 15%, rgba(255,201,60,0.25), transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(23,184,144,0.22), transparent 45%),
+        var(--stage);
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* subtle marquee-light dots scattered on the stage backdrop */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(var(--gold) 1.5px, transparent 1.5px);
+    background-size: 40px 40px;
+    opacity: 0.08;
+    pointer-events: none;
+}
+
+.container {
+    width: 100%;
+    max-width: 620px;
+    position: relative;
+    z-index: 1;
+}
+
+.joke-generator {
+    background: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 36px 32px 30px;
+    position: relative;
+    animation: curtain-rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes curtain-rise {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* two little marquee bulbs pinning the card corners */
+.joke-generator::before,
+.joke-generator::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    width: 16px;
+    height: 16px;
+    background: var(--gold);
+    border: 3px solid var(--ink);
+    border-radius: 50%;
+}
+.joke-generator::before { left: 24px; }
+.joke-generator::after { right: 24px; }
+
+h1 {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    text-align: center;
+    margin: 4px 0 28px;
+    letter-spacing: 0.5px;
+    text-shadow: 3px 3px 0 var(--gold);
+}
+
+/* ---------------- Controls ---------------- */
+
+.controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.category-select {
+    flex: 1 1 180px;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: #fff;
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    padding: 12px 18px;
+    cursor: pointer;
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%),
+                       linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+    background-position: calc(100% - 22px) center, calc(100% - 16px) center;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.category-select:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 0 var(--ink);
+}
+
+.category-select:focus-visible,
+.get-joke-btn:focus-visible,
+.reveal-btn:focus-visible {
+    outline: 3px solid var(--teal);
+    outline-offset: 2px;
+}
+
+.get-joke-btn {
+    flex: 1 1 160px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #fff;
+    background: var(--coral);
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    padding: 12px 22px;
+    cursor: pointer;
+    box-shadow: 0 5px 0 var(--ink);
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+}
+
+.get-joke-btn:hover {
+    background: var(--coral-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 7px 0 var(--ink);
+}
+
+.get-joke-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 var(--ink);
+}
+
+/* ---------------- Joke card ---------------- */
+
+.joke-container {
+    background: #fff;
+    border: 3px dashed var(--ink);
+    border-radius: var(--radius-md);
+    padding: 26px 22px;
+    margin-bottom: 20px;
+    position: relative;
+    animation: pop-in 0.35s ease both;
+}
+
+@keyframes pop-in {
+    from { opacity: 0; transform: scale(0.92); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.joke-content {
+    text-align: center;
+}
+
+.joke-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    line-height: 1.55;
+    margin: 0 0 6px;
+}
+
+.punchline-text {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--coral-dark);
+    line-height: 1.55;
+    margin: 10px 0 0;
+    animation: curtain-open 0.4s ease both;
+}
+
+@keyframes curtain-open {
+    from { opacity: 0; transform: translateY(-6px); filter: blur(2px); }
+    to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.reveal-btn {
+    display: block;
+    margin: 18px auto 0;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--gold);
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    padding: 10px 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 0 var(--ink);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.reveal-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 var(--ink);
+}
+
+.reveal-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 var(--ink);
+}
+
+/* ---------------- Loading spinner ---------------- */
+
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 0;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    color: var(--ink);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 5px solid rgba(43, 27, 77, 0.15);
+    border-top-color: var(--coral);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ---------------- Error message ---------------- */
+
+.error-message {
+    background: #FFE3E7;
+    border: 2px solid var(--coral-dark);
+    color: var(--coral-dark);
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* ---------------- Joke history / "set list" ---------------- */
+
+.joke-history {
+    border-top: 3px dotted rgba(43, 27, 77, 0.25);
+    padding-top: 18px;
+}
+
+.joke-history h3 {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.joke-history h3::before {
+    content: "🎤";
+}
+
+.joke-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.joke-list li {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-left: 6px solid var(--teal);
+    border-radius: 8px;
+    padding: 10px 12px;
+    animation: slide-in 0.3s ease both;
+}
+
+@keyframes slide-in {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+.joke-list::-webkit-scrollbar {
+    width: 8px;
+}
+.joke-list::-webkit-scrollbar-thumb {
+    background: var(--ink);
+    border-radius: 999px;
+}
+
+/* ---------------- Utility ---------------- */
+
+.hidden {
+    display: none !important;
+}
+
+/* ---------------- Responsive ---------------- */
+
+@media (max-width: 480px) {
+    .joke-generator {
+        padding: 28px 18px 22px;
+    }
+
+    .controls {
+        flex-direction: column;
+    }
+
+    .category-select,
+    .get-joke-btn {
+        width: 100%;
+    }
+}
+
+/* ---------------- Reduced motion ---------------- */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}

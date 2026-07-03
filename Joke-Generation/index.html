@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Joke Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="joke-generator">
+            <h1>😂 Random Joke Generator</h1>
+            
+            <div class="controls">
+                <select id="categorySelect" class="category-select">
+                    <option value="any">Any Category</option>
+                    <option value="misc">Misc 😄</option>
+                    <option value="programming">Programming 💻</option>
+                    <option value="pun">Pun 🎭</option>
+                    <option value="spooky">Spooky 👻</option>
+                    <option value="dark">Dark Humor 🌑</option>
+                </select>
+                <button id="getJokeBtn" class="get-joke-btn">Get a Joke</button>
+            </div>
+
+            <div id="jokeContainer" class="joke-container hidden">
+                <div id="jokeContent" class="joke-content">
+                    <p id="jokeText" class="joke-text"></p>
+                    <p id="punchlineText" class="punchline-text hidden"></p>
+                </div>
+                <button id="revealBtn" class="reveal-btn hidden">Reveal Punchline</button>
+            </div>
+
+            <div id="loadingSpinner" class="loading-spinner hidden">
+                <div class="spinner"></div>
+                <p>Loading a funny joke...</p>
+            </div>
+
+            <div id="errorMessage" class="error-message hidden"></div>
+
+            <div class="joke-history">
+                <h3>Recent Jokes</h3>
+                <ul id="jokeList" class="joke-list"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
